@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinba: Singing-to-Accompaniment Generation with Pitch Guidance via Mamba-Based Language Model</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding-bottom: 50px; }
+        td { vertical-align: middle; min-width: 200px; }
+        audio { width: 200px; }
+        .section { margin-top: 50px; }
+        .container { max-width: 900px; }
+        .text-justify { text-align: justify; }
+        img { max-width: 100%; display: block; margin: 20px auto; }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Revisiting Voice Large Language Models as Scalable Multi-Lingual and Multi-Task Learners</h2>
+        <p class="text-center"><b>Anonymous Authors</b></p>
+
+        <!-- Abstract -->
+        <div class="section text-center">
+            <h3 class="text-center">Abstract</h3>
+            <p class="text-justify">
+                In this paper, we propose Sinba, a system that can directly generate corresponding background accompaniment music from vocal input, allowing users to create complete songs using only sung vocals. Sinba adopts a decoder-only backbone network architecture. We utilize the Mamba model, which is a linear-time sequence modeling method with selective state spaces and has been proven to achieve more advanced performance than Transformers as a foundation model in long-sequence modeling tasks. However, the Mamba was initially applied to audio tasks by pre-training directly on raw audio waveform samples as the backbone model. In this paper, we convert both the training targets and inputs into discretized tokens for direct training. We also extract pitch information from the vocal input as an additional feature for the model. The proposed model is trained using source-separated data pairs. Subjective and objective experimental results demonstrate that the proposed model can generate high-quality accompaniment that matches the style and rhythm of the vocal input, outperforming the Transformer-based baseline. Synthesized audio samples are available at:https://sounddemos.github.io/sinba.
+            </p>
+        </div>
+
+        <!-- Model Architecture Image -->
+        <div class="section text-center">
+            <h3>Model Architecture</h3>
+            <img src="arch_1.png" alt="Model Architecture 1" class="img-fluid">
+            <p><b>Figure 1: Overview of Sinba, where coarse acoustic tokens and fine acoustic tokens are concatenated vertically before being input
+                to the Audio Tokenizer Decoder.</b></p>
+            
+            <img src="arch_2.png" alt="Model Architecture 2" class="img-fluid">
+            <p><b>Figure 2: Diagram of the Sinba modeling process.</b></p>
+        </div>
+
+        <!-- Main Results -->
+        <div id="tts" class="section text-center">
+            <h3 class="text-center">Main Results</h3>
+            <!-- <div class="table-responsive d-flex justify-content-center"> -->
+            <div class="d-flex justify-content-center">
+                <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>Ground Truth</th>
+                        <th>Enc-Dec Transformer</th>
+                        <th>Dec-Only Transformer</th>
+                        <th>SingSong (Replicated)</th>
+                        <th>Sinba w/o Pitch Tokens</th>
+                        <th>Sinba (Ours)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/李健-似水年华_seg14_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/李健-似水年华_seg14_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/李健-似水年华_seg14_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/李健-似水年华_seg14_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/李健-似水年华_seg14_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/李健-似水年华_seg14_song_1.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/李健-李健-异乡人_seg0_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/李健-异乡人_seg0_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/李健-异乡人_seg0_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/李健-异乡人_seg0_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/李健-异乡人_seg0_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/李健-异乡人_seg0_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/刘德华-天生天养_seg15_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/刘德华-天生天养_seg15_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/刘德华-天生天养_seg15_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/刘德华-天生天养_seg15_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/刘德华-天生天养_seg15_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/刘德华-天生天养_seg15_song_1.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/容祖儿-一个人的情歌_seg19_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/容祖儿-一个人的情歌_seg19_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/容祖儿-一个人的情歌_seg19_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/容祖儿-一个人的情歌_seg19_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/容祖儿-一个人的情歌_seg19_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/容祖儿-一个人的情歌_seg19_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/伍佰-路_seg18_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/伍佰-路_seg18_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/伍佰-路_seg18_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/伍佰-路_seg18_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/伍佰-路_seg18_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/伍佰-路_seg18_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/游鸿明-一天一万年_seg30_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/游鸿明-一天一万年_seg30_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/游鸿明-一天一万年_seg30_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/游鸿明-一天一万年_seg30_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/游鸿明-一天一万年_seg30_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/游鸿明-一天一万年_seg30_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/张国荣-同道中人_seg4_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/张国荣-同道中人_seg4_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/张国荣-同道中人_seg4_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/张国荣-同道中人_seg4_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/张国荣-同道中人_seg4_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/张国荣-同道中人_seg4_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/张国荣-EvenNow_seg20_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/张国荣-EvenNow_seg20_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/张国荣-EvenNow_seg20_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/张国荣-EvenNow_seg20_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/张国荣-EvenNow_seg20_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/张国荣-EvenNow_seg20_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/张惠妹-听海_seg20_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/张惠妹-听海_seg20_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/张惠妹-听海_seg20_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/张惠妹-听海_seg20_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/张惠妹-听海_seg20_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/张惠妹-听海_seg20_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/张靓颖-好不容易-演唱会版_seg15_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/张靓颖-好不容易-演唱会版_seg15_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/张靓颖-好不容易-演唱会版_seg15_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/张靓颖-好不容易-演唱会版_seg15_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/张靓颖-好不容易-演唱会版_seg15_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/张靓颖-好不容易-演唱会版_seg15_song_1.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/庄心妍-耳旁风_seg15_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/庄心妍-耳旁风_seg15_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/庄心妍-耳旁风_seg15_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/庄心妍-耳旁风_seg15_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/庄心妍-耳旁风_seg15_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/庄心妍-耳旁风_seg15_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/庄心妍-心有所爱_seg28_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/庄心妍-心有所爱_seg28_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/庄心妍-心有所爱_seg28_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/庄心妍-心有所爱_seg28_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/庄心妍-心有所爱_seg28_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/庄心妍-心有所爱_seg28_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/gt/G.E.M.邓紫棋-离心力_seg14_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/enc_dec/G.E.M.邓紫棋-离心力_seg14_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/dec_only/G.E.M.邓紫棋-离心力_seg14_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/singsong/G.E.M.邓紫棋-离心力_seg14_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba_no_pitch/G.E.M.邓紫棋-离心力_seg14_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/main/sinba/G.E.M.邓紫棋-离心力_seg14_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- generalization_study on musdb 18-->
+        <div id="vc" class="section">
+            <h3 class="text-center">Generalization Study on MUSDB18</h3>
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr><th>Ground Truth</th><th>Isolated Vocal</th><th>Source-separated Vocal</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/Al_James_Schoolboy_Facination_seg4_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/Al_James_Schoolboy_Facination_seg4_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/Al_James_Schoolboy_Facination_seg4_song_1.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/AM_Contra_Heart_Peripheral_seg4_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/AM_Contra_Heart_Peripheral_seg4_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/AM_Contra_Heart_Peripheral_seg4_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/AM_Contra_Heart_Peripheral_seg6_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/AM_Contra_Heart_Peripheral_seg6_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/AM_Contra_Heart_Peripheral_seg6_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/AM_Contra_Heart_Peripheral_seg8_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/AM_Contra_Heart_Peripheral_seg8_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/AM_Contra_Heart_Peripheral_seg8_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/Arise_Run_Run_Run_seg9_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/Arise_Run_Run_Run_seg9_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/Arise_Run_Run_Run_seg9_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/Arise_Run_Run_Run_seg10_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/Arise_Run_Run_Run_seg10_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/Arise_Run_Run_Run_seg10_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/Carlos_Gonzalez_A_Place_For_Us_seg3_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/Carlos_Gonzalez_A_Place_For_Us_seg3_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/Carlos_Gonzalez_A_Place_For_Us_seg3_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/M.E.R.C._Music_Knockout_seg0_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/M.E.R.C._Music_Knockout_seg0_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/M.E.R.C._Music_Knockout_seg0_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/M.E.R.C._Music_Knockout_seg26_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/M.E.R.C._Music_Knockout_seg26_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/M.E.R.C._Music_Knockout_seg26_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/Moosmusic_Big_Dummy_Shake_seg16_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/Moosmusic_Big_Dummy_Shake_seg16_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/Moosmusic_Big_Dummy_Shake_seg16_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/Nerve_9_Pray_For_The_Rain_seg22_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/Nerve_9_Pray_For_The_Rain_seg22_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/Nerve_9_Pray_For_The_Rain_seg22_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/Sambasevam_Shanmugam_Kaathaadi_seg0_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/Sambasevam_Shanmugam_Kaathaadi_seg1_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/Sambasevam_Shanmugam_Kaathaadi_seg0_song_1.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/gt/Speak_Softly_Broken_Man_seg16_gt.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/isolated/Speak_Softly_Broken_Man_seg16_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study1/source_sep/Speak_Softly_Broken_Man_seg16_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- generalization_study on Opencpop -->
+        <div id="svs" class="section">
+            <h3 class="text-center">Generalization Study on Opencpop</h3>
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr><th>Synthesized Vocals </th><th>Isolated Vocals</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/synth/2044001664_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/real/2044001664_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/synth/2086003196_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/real/2086003196_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/synth/2086003199_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/real/2086003199_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/synth/2092003410_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/real/2092003410_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/synth/2092003417_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/real/2092003417_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/synth/2092003443_song_0.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/real/2092003443_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/synth/2100003724_song_1.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/real/2100003724_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/synth/2100003735_song_2.wav" type="audio/wav"></audio></td>
+                        <td><audio controls controlslist="nodownload"><source src="audio/generalization_study2/real/2100003735_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- long_audio-->
+        <div id="ablation" class="section">
+            <h3 class="text-center">Long-Duration Input Audio Inference</h3>
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr><th>Long-Duration Input Audio Inference</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/long_audio/爱错cut_song_0.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/long_audio/爱的主打歌cut_song_1.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/long_audio/改变自己cut_song_2.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td><audio controls controlslist="nodownload"><source src="audio/long_audio/玩酷cut_song_1.wav" type="audio/wav"></audio></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
